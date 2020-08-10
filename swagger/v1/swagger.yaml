@@ -1,0 +1,37 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/v1/products":
+    post:
+      summary: Creates a product
+      tags:
+      - Blogs
+      parameters: []
+      responses:
+        '201':
+          description: blog created
+          content: {}
+        '422':
+          description: invalid request
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                address:
+                  type: string
+              required:
+              - name
+              - address
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com
