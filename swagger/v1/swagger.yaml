@@ -8,11 +8,11 @@ paths:
     post:
       summary: Creates a product
       tags:
-      - Blogs
+      - Products
       parameters: []
       responses:
         '201':
-          description: blog created
+          description: product created
           content: {}
         '422':
           description: invalid request
@@ -25,13 +25,91 @@ paths:
               properties:
                 name:
                   type: string
-                address:
-                  type: string
+                price:
+                  type: number
               required:
               - name
-              - address
+              - price
+  "/v1/products/{id}":
+    put:
+      summary: Updates a product
+      tags:
+      - Products
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: product updated
+          content: {}
+        '404':
+          description: invalid request
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                price:
+                  type: number
+              required:
+              - name
+              - price
+    patch:
+      summary: Updates a product
+      tags:
+      - Products
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: product updated
+          content: {}
+        '404':
+          description: invalid request
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                price:
+                  type: number
+              required:
+              - name
+              - price
+    delete:
+      summary: Destroys a product
+      tags:
+      - Products
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: product destroyed
+          content: {}
+        '404':
+          description: invalid request
+          content: {}
 servers:
-- url: https://{defaultHost}
+- url: http://{defaultHost}
   variables:
     defaultHost:
-      default: www.example.com
+      default: localhost:3000

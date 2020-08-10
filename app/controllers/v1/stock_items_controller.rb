@@ -1,9 +1,9 @@
 class V1::StockItemsController < ApplicationController
-  # PATCH/PUT /v1/stock_items/add
+  # PATCH/PUT /v1/stock_item/add
   def add
   end
 
-  # PATCH/PUT /v1/stock_items/remove
+  # PATCH/PUT /v1/stock_item/remove
   def remove
   end
 

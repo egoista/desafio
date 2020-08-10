@@ -3,7 +3,7 @@ class V1::ProductsController < ApplicationController
 
   # GET /v1/products/search
   def search
-    @products = Product.all
+    @products = Product.find(params[:ids])
 
     render json: @products
   end
@@ -13,18 +13,18 @@ class V1::ProductsController < ApplicationController
     @product = Product.new(product_params)
 
     if @product.save
-      render json: @product, status: :created, location: @product
+      render json: V1::ProductsSerializer.new(@product), status: :created
     else
-      render json: @product.errors, status: :unprocessable_entity
+      render_errors(@product.errors.full_messages, :unprocessable_entity)
     end
   end
 
   # PATCH/PUT /v1/products/1
   def update
     if @product.update(product_params)
-      render json: @product
+      render json: V1::ProductsSerializer.new(@product)
     else
-      render json: @product.errors, status: :unprocessable_entity
+      render_errors(@product.errors.full_messages, :unprocessable_entity)
     end
   end
 
@@ -34,13 +34,14 @@ class V1::ProductsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_product
-      @product = Product.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def product_params
-      params.require(:product).permit(:name, :price)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_product
+    @product = Product.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def product_params
+    params.require(:product).permit(:name, :price)
+  end
 end
