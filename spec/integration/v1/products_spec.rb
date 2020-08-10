@@ -10,19 +10,19 @@ describe 'Products V1 API' do
         type: :object,
         properties: {
           name: { type: :string },
-          price: { type: :number }
+          price: { type: :number_float }
         },
         required: %w[name price]
       }
 
       response '201', 'product created' do
+        schema type: :object, properties: {
+          name: { type: :string },
+          price: { type: :number_float }
+        }, required: %w[name price]
+
         let(:product) { { name: 'foo', price: 1.1 } }
-        run_test! do |response|
-          data = JSON.parse(response.body)
-          expect(data.keys).to match_array(%w[name price])
-          expect(data['name']).to eq('foo')
-          expect(data['price']).to eq(1.1)
-        end
+        run_test!
       end
 
       response '422', 'invalid request' do
@@ -30,6 +30,42 @@ describe 'Products V1 API' do
         run_test! do |response|
           data = JSON.parse(response.body)
           expect(data['errors']).to match_array(["Price can't be blank"])
+        end
+      end
+    end
+  end
+
+  path '/v1/products/search' do
+    get 'Search for products' do
+      tags 'Products'
+      consumes 'application/json'
+      parameter name: :'ids[]', in: :query, type: :array, schema: {
+        type: :array,
+        items: { type: :integer }
+      }, collectionFormat: :multi
+
+      let(:product_1) { create(:product) }
+      let(:product_2) { create(:product) }
+
+      response '200', 'products found' do
+        schema type: :array, items: { type: :object, properties: {
+          name: { type: :string },
+          price: { type: :number_float }
+        }, required: %w[name price] }
+        let('ids[]') { [product_1.id, product_2.id] }
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          expect(data.count).to eq(2)
+
+          expect(data[0]).to eq({
+            'name' => product_1.name,
+            'price' => product_1.price
+          })
+          expect(data[1]).to eq({
+            'name' => product_2.name,
+            'price' => product_2.price
+          })
         end
       end
     end
@@ -43,7 +79,7 @@ describe 'Products V1 API' do
         type: :object,
         properties: {
           name: { type: :string },
-          price: { type: :number }
+          price: { type: :number_float }
         },
         required: %w[name price]
       }
@@ -51,13 +87,18 @@ describe 'Products V1 API' do
       let(:saved_product) { create(:product) }
 
       response '200', 'product updated' do
+        schema type: :object, properties: {
+          name: { type: :string },
+          price: { type: :number_float }
+        }, required: %w[name price]
         let(:id) { saved_product.id }
         let(:product) { { name: 'foo' } }
         run_test! do |response|
           data = JSON.parse(response.body)
-          expect(data.keys).to match_array(%w[name price])
-          expect(data['name']).to eq('foo')
-          expect(data['price']).to eq(saved_product.price)
+          expect(data).to eq({
+            'name' => 'foo',
+            'price' => saved_product.price
+          })
         end
       end
 
@@ -86,13 +127,18 @@ describe 'Products V1 API' do
       let(:saved_product) { create(:product) }
 
       response '200', 'product updated' do
+        schema type: :object, properties: {
+          name: { type: :string },
+          price: { type: :number_float }
+        }, required: %w[name price]
         let(:id) { saved_product.id }
         let(:product) { { name: 'foo' } }
         run_test! do |response|
           data = JSON.parse(response.body)
-          expect(data.keys).to match_array(%w[name price])
-          expect(data['name']).to eq('foo')
-          expect(data['price']).to eq(saved_product.price)
+          expect(data).to eq({
+            'name' => 'foo',
+            'price' => saved_product.price
+          })
         end
       end
 

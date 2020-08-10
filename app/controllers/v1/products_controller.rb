@@ -5,7 +5,7 @@ class V1::ProductsController < ApplicationController
   def search
     @products = Product.find(params[:ids])
 
-    render json: @products
+    render json: V1::ProductsSerializer.collection_as_json(@products)
   end
 
   # POST /v1/products

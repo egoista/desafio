@@ -30,6 +30,24 @@ paths:
               required:
               - name
               - price
+  "/v1/products/search":
+    get:
+      summary: Search for products
+      tags:
+      - Products
+      parameters:
+      - name: ids[]
+        in: query
+        type: array
+        schema:
+          type: array
+          items:
+            type: integer
+        collectionFormat: multi
+      responses:
+        '200':
+          description: products found
+          content: {}
   "/v1/products/{id}":
     put:
       summary: Updates a product
@@ -57,7 +75,7 @@ paths:
                 name:
                   type: string
                 price:
-                  type: number
+                  type: number_float
               required:
               - name
               - price

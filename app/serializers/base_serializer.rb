@@ -7,11 +7,11 @@ class BaseSerializer
     raise 'Base class called. Method as_json must be implemented.'
   end
 
-  def collection_as_json
-    return [] unless @object.is_a?(Enumerable)
+  def self.collection_as_json(collection)
+    return [] unless collection.is_a?(Enumerable)
 
-    @object.map do |item|
-      as_json(item)
+    collection.map do |item|
+      new(item).as_json
     end
   end
 end
