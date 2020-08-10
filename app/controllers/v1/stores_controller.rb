@@ -1,7 +1,14 @@
 class V1::StoresController < ApplicationController
-  before_action :set_store, only: [:update, :destroy]
+  before_action :set_store, only: [:update, :destroy, :stock_item]
 
-  # POST /stores
+  # GET /v1/stores/search
+  def search
+    @stores = Store.all
+
+    render json: @stores
+  end
+
+  # POST /v1/stores
   def create
     @store = Store.new(store_params)
 
@@ -12,7 +19,11 @@ class V1::StoresController < ApplicationController
     end
   end
 
-  # PATCH/PUT /stores/1
+  # POST /v1/stock_item
+  def stock_item
+  end
+
+  # PATCH/PUT /v1/stores/1
   def update
     if @store.update(store_params)
       render json: @store
@@ -21,7 +32,7 @@ class V1::StoresController < ApplicationController
     end
   end
 
-  # DELETE /stores/1
+  # DELETE /v1/stores/1
   def destroy
     @store.destroy
   end
