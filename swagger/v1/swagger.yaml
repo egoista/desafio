@@ -26,7 +26,7 @@ paths:
                 name:
                   type: string
                 price:
-                  type: number
+                  type: number_float
               required:
               - name
               - price
@@ -122,6 +122,307 @@ paths:
       responses:
         '204':
           description: product destroyed
+          content: {}
+        '404':
+          description: invalid request
+          content: {}
+  "/v1/stores":
+    post:
+      summary: Creates a store
+      tags:
+      - Stores
+      parameters: []
+      responses:
+        '201':
+          description: store created
+          content: {}
+        '422':
+          description: invalid request
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                store:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    address:
+                      type: string
+                  required:
+                  - name
+                  - address
+              required:
+              - store
+  "/v1/stores/{id}/stock_item":
+    post:
+      summary: Register a stock item for the store
+      tags:
+      - Stores
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '201':
+          description: stock item created
+          content: {}
+        '422':
+          description: invalid request
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stock_item:
+                  type: object
+                  properties:
+                    quantity:
+                      type: integer
+                    product_id:
+                      type: integer
+                  required:
+                  - quantity
+                  - product_id
+              required:
+              - stock_item
+  "/v1/stores/{id}/stock_item/{product_id}/add/{quantity}":
+    put:
+      summary: add a quantity to a stock item
+      tags:
+      - Stores
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: product_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: quantity
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: store item incremented
+          content: {}
+        '404':
+          description: record not found
+          content: {}
+        '400':
+          description: bad request
+          content: {}
+    patch:
+      summary: add a quantity to a stock item
+      tags:
+      - Stores
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: product_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: quantity
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: store item incremented
+          content: {}
+        '404':
+          description: record not found
+          content: {}
+        '400':
+          description: bad request
+          content: {}
+  "/v1/stores/{id}/stock_item/{product_id}/remove/{quantity}":
+    put:
+      summary: remove a quantity from a stock item
+      tags:
+      - Stores
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: product_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: quantity
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: store item incremented
+          content: {}
+        '422':
+          description: negative quantity
+          content: {}
+        '404':
+          description: record not found
+          content: {}
+        '400':
+          description: bad request
+          content: {}
+    patch:
+      summary: remove a quantity from a stock item
+      tags:
+      - Stores
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: product_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: quantity
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: store item incremented
+          content: {}
+        '422':
+          description: negative quantity
+          content: {}
+        '404':
+          description: record not found
+          content: {}
+        '400':
+          description: bad request
+          content: {}
+  "/v1/stores/search":
+    get:
+      summary: Search for stores
+      tags:
+      - Stores
+      parameters:
+      - name: ids[]
+        in: query
+        type: array
+        schema:
+          type: array
+          items:
+            type: integer
+        collectionFormat: multi
+      responses:
+        '200':
+          description: stores found
+          content: {}
+  "/v1/stores/{id}":
+    put:
+      summary: Updates a store
+      tags:
+      - Stores
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: store updated
+          content: {}
+        '404':
+          description: invalid request
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                store:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    address:
+                      type: string
+                  required:
+                  - name
+                  - address
+              required:
+              - store
+    patch:
+      summary: Updates a store
+      tags:
+      - Stores
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: store updated
+          content: {}
+        '404':
+          description: invalid request
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                store:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    address:
+                      type: string
+                  required:
+                  - name
+                  - address
+              required:
+              - store
+    delete:
+      summary: Destroys a store
+      tags:
+      - Stores
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: store destroyed
           content: {}
         '404':
           description: invalid request
