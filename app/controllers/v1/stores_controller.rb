@@ -2,6 +2,7 @@ class V1::StoresController < ApplicationController
   before_action :set_store, only: [:update, :destroy, :stock_item, :add, :remove]
   before_action :set_stock_item, only: [:add, :remove]
   before_action :validate_quantity, only: [:add, :remove]
+  rescue_from 'ActiveRecord::StatementInvalid', with: :handle_constraint_error
 
   # GET /v1/stores/search
   def search
@@ -88,5 +89,9 @@ class V1::StoresController < ApplicationController
 
   def stock_item_params
     params.require(:stock_item).permit(:product_id, :quantity)
+  end
+
+  def handle_constraint_error
+    render_errors(['Data inconsistency.'], :precondition_failed)
   end
 end

@@ -22,12 +22,18 @@ describe 'Stores V1 API' do
       }
 
       response '201', 'store created' do
-        schema type: :object, properties: {
-          id: { type: :integer },
-          name: { type: :string },
-          stock_items: { type: :array },
-          address: { type: :string }
-        }, required: %w[name address id stock_items]
+        # schema type: :object, properties: {
+        #   id: { type: :integer },
+        #   name: { type: :string },
+        #   stock_items: { type: :array },
+        #   address: { type: :string }
+        # }, required: %w[name address id stock_items]
+        examples 'application/json' => {
+          id: 1,
+          name: 'Hello world!',
+          address: '...',
+          stock_items: []
+        }
 
         let(:store) { { name: 'foo', address: 'rua bar' } }
         run_test! do |response|
@@ -91,6 +97,17 @@ describe 'Stores V1 API' do
         run_test! do |response|
           data = JSON.parse(response.body)
           expect(data['errors']).to match_array(["Quantity can't be blank", "Quantity is not a number"])
+        end
+      end
+
+      response '412', 'invalid request' do
+        before do
+          expect_any_instance_of(StockItem).to receive(:save).and_raise(ActiveRecord::StatementInvalid)
+        end
+        let(:stock_item) { { stock_item: { product_id: product.id } } }
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          expect(data['errors']).to match_array(["Data inconsistency."])
         end
       end
     end
