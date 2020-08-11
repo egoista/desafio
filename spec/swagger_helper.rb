@@ -24,6 +24,9 @@ RSpec.configure do |config|
       paths: {},
       servers: [
         {
+          url: 'https://nexxas.herokuapp.com'
+        },
+        {
           url: 'http://{defaultHost}',
           variables: {
             defaultHost: {

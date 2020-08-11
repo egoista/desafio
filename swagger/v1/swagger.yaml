@@ -135,6 +135,12 @@ paths:
       responses:
         '201':
           description: store created
+          examples:
+            application/json:
+              id: 1
+              name: Hello world!
+              address: "..."
+              stock_items: []
           content: {}
         '422':
           description: invalid request
@@ -428,6 +434,7 @@ paths:
           description: invalid request
           content: {}
 servers:
+- url: https://nexxas.herokuapp.com
 - url: http://{defaultHost}
   variables:
     defaultHost:
