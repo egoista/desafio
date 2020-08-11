@@ -17,6 +17,7 @@ describe 'Products V1 API' do
 
       response '201', 'product created' do
         schema type: :object, properties: {
+          id: { type: :integer },
           name: { type: :string },
           price: { type: :number_float }
         }, required: %w[name price]
@@ -49,6 +50,7 @@ describe 'Products V1 API' do
 
       response '200', 'products found' do
         schema type: :array, items: { type: :object, properties: {
+          id: { type: :integer },
           name: { type: :string },
           price: { type: :number_float }
         }, required: %w[name price] }
@@ -59,10 +61,12 @@ describe 'Products V1 API' do
           expect(data.count).to eq(2)
 
           expect(data[0]).to eq({
+            'id' => product_1.id,
             'name' => product_1.name,
             'price' => product_1.price
           })
           expect(data[1]).to eq({
+            'id' => product_2.id,
             'name' => product_2.name,
             'price' => product_2.price
           })
@@ -88,6 +92,7 @@ describe 'Products V1 API' do
 
       response '200', 'product updated' do
         schema type: :object, properties: {
+          id: { type: :integer },
           name: { type: :string },
           price: { type: :number_float }
         }, required: %w[name price]
@@ -96,6 +101,7 @@ describe 'Products V1 API' do
         run_test! do |response|
           data = JSON.parse(response.body)
           expect(data).to eq({
+            'id' => id,
             'name' => 'foo',
             'price' => saved_product.price
           })
@@ -128,6 +134,7 @@ describe 'Products V1 API' do
 
       response '200', 'product updated' do
         schema type: :object, properties: {
+          id: { type: :integer },
           name: { type: :string },
           price: { type: :number_float }
         }, required: %w[name price]
@@ -136,6 +143,7 @@ describe 'Products V1 API' do
         run_test! do |response|
           data = JSON.parse(response.body)
           expect(data).to eq({
+            'id' => id,
             'name' => 'foo',
             'price' => saved_product.price
           })

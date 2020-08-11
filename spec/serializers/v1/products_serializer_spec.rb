@@ -7,6 +7,7 @@ RSpec.describe V1::ProductsSerializer do
       it 'returns a json response' do
         response = described_class.new(product).as_json
         expect(response).to eq({
+          'id' => product.id,
           'name' => product.name,
           'price' => product.price
         })
@@ -19,7 +20,7 @@ RSpec.describe V1::ProductsSerializer do
       let(:products) { build_list(:product, 2) }
       it 'returns a json array response' do
         response = described_class.collection_as_json(products)
-        expect(response).to eq(products.map { |product| { 'name' => product.name, 'price' => product.price } })
+        expect(response).to eq(products.map { |product| { 'id' => product.id, 'name' => product.name, 'price' => product.price } })
       end
     end
 
