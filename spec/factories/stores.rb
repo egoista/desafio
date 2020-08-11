@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :store do
-    name { "MyString" }
-    address { "MyString" }
+    name { Faker::Company.name }
+    address { Faker::Address.street_address }
   end
 end
