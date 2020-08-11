@@ -13,10 +13,10 @@ Rails.application.routes.draw do
       end
       member do
         post 'stock_item'
-        patch 'stock_item/add'
-        put 'stock_item/add'
-        patch 'stock_item/remove'
-        put 'stock_item/remove'
+        patch 'stock_item/:product_id/add/:quantity', action: :add
+        put 'stock_item/:product_id/add/:quantity', action: :add
+        patch 'stock_item/:product_id/remove/:quantity', action: :remove
+        put 'stock_item/:product_id/remove/:quantity', action: :remove
       end
     end
   end
